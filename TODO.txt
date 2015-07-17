@@ -1,0 +1,9 @@
+-- Use Haskell with Vision.Primitive module
+-- Have it find basic loops in a photo by (maybe): 
+  -- Removing anything that isn't black in photo
+  -- Add a little magic
+  -- Find loops 
+    -- Magic to be determined later
+    -- Finish this part before kickoff?
+-- Dot-To-Code System:
+  -- Count Number of Dots -> Convert To 5-bit Binary
