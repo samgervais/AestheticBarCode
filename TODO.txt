@@ -5,5 +5,6 @@
   -- Find loops 
     -- Magic to be determined later
     -- Finish this part before kickoff?
+    -- Defining loop as a set of points where the first (starting) point is adjacent to the final point. 
 -- Dot-To-Code System:
   -- Count Number of Dots -> Convert To 5-bit Binary
