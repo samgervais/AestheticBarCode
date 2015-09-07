@@ -1,10 +1,15 @@
 -- Use Haskell with Vision.Primitive module
--- Have it find basic loops in a photo by (maybe): 
+-- Have it find basic loops in a photo by (maybe):
   -- Removing anything that isn't black in photo
   -- Add a little magic
-  -- Find loops 
+  -- Find loops
     -- Magic to be determined later
     -- Finish this part before kickoff?
-    -- Defining loop as a set of points where the first (starting) point is adjacent to the final point. 
+    -- Defining loop as a set of points where the first (starting) point is adjacent to the final point.
 -- Dot-To-Code System:
   -- Count Number of Dots -> Convert To 5-bit Binary
+
+
+Sept 6 - Sept 13
+Learn a bit of C
+Install XCode
