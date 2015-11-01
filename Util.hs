@@ -12,10 +12,11 @@ toBaseFourString dots = char : rest
         rest = toBaseFourString $ delete dot dots
 
 toBaseTen :: String -> Int
-toBaseTen = sum.zipWith (*) fours.reverse.map (read.(:[])) 
+toBaseTen = sum.zipWith (*) fours.reverse.map (read.(:[]))
   where fours = map (4^) [0..]
 
 furthest dir xs = foldr dir [] xs
+
 
 left p [] = [p]
 left p@((x,_),_) xs = case compare x (fst $ fst $ head xs) of
