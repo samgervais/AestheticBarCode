@@ -22,7 +22,7 @@ version:             0.1.0.0
 -- license:
 
 -- The file containing the license text.
-license-file:        LICENSE
+-- license-file:        LICENSE
 
 -- The package author(s).
 author:              Sam Gervais
@@ -57,7 +57,7 @@ executable AestheticBarCode
   -- other-extensions:
 
   -- Other library packages from which modules are imported.
-  build-depends:       base >=4.8 && <4.9,
+  build-depends:       base,
                        cv-combinators
 
   -- Directories containing source files.
