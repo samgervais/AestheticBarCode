@@ -48,21 +48,22 @@ split' = processor processSplit allocateSplit convertState releaseState
         convertState = return
         releaseState _ = return ()
 
-getBlue = first3
-getGreen = second3
-getRed = third3
-
-
+fst3 :: (a,b,c) -> a
 fst3 (a,_,_) = a
-first3 :: IOProcessor (a,b,c) a
+
+first3, getBlue :: IOProcessor (a,b,c) a
 first3 = arr fst3
 
+snd3 :: (a,b,c) -> b
 snd3 (_,b,_) = b
-second3 :: IOProcessor (a,b,c) b
+
+second3, getGreen :: IOProcessor (a,b,c) b
 second3 = arr snd3
 
+trd3 :: (a,b,c) -> c
 trd3 (_,_,c) = c
-third3 :: IOProcessor (a,b,c) c
+
+third3, getRed :: IOProcessor (a,b,c) c
 third3 = arr trd3
 
 modRed :: x -> y -> IOProcessor (a,b,x) (a,b,y)
@@ -70,3 +71,8 @@ modRed
 
 modTrd :: (x -> y) -> (a,b,x) -> (a,b,y)
 modTrd f (a,b,x) = (a,b,f x) 
+
+
+getBlue = first3
+getGreen = second3
+getRed = third3
