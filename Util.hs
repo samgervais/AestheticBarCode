@@ -12,7 +12,7 @@ code :: [((Int,Int), Color)] -- ^ Takes a list of colors with their correspondin
         -> Int -- ^ Outputs a base-ten int
 code = toBaseTen . toBaseFourString
 
--- | Creates a base-four number as a string where each element of the given list is a separate digit of the
+-- | Creates a base-four number as a string where each element of the given list represents a separate digit of the
 -- | number, and the number is derived by converting the element's color into a number; the list is also sorted
 -- | by posistion.
 toBaseFourString :: [((Int,Int), Color)] -- ^ Takes a list of colors with their corresponding positions
@@ -23,13 +23,13 @@ toBaseFourString dots = char : rest
         char = head $ show $ fromEnum c
         rest = toBaseFourString $ delete dot dots
 
--- | Converts a string with base-four numbers into base ten. It is able to use the output of the "toBaseFourString" function.
+-- | Converts a string with a base-four number into base-ten. It is able to use the output of the "toBaseFourString" function.
 toBaseTen :: String -- ^ Takes a string containing a base-four number
              -> Int -- ^ Outputs a base-ten int
 toBaseTen = sum . zipWith (*) fours . reverse . map (read.(:[]))
   where fours = map (4^) [0..]
 
--- | A function properly used with the "furthest" function which compares the x-coordinate of a given color's position and the
+-- | A function properly used with the "furthest" function, which compares the x-coordinate of a given color's position and the
 -- | x-coordinate of the first element of a list of colors and their positions. With this comparison, the function returns, in
 -- | a list, the color with the smallest x-coordinate.
 left :: ((Int, Int), Color) -- ^ Takes a color and its corresponding position
@@ -50,8 +50,8 @@ up p@((_,y),_) ys = case compare y (snd $ fst $ head ys) of
             EQ -> p : ys
             GT -> ys
 
--- | Uses the functions "up" and "left" to produce a sorted list where the first element is the upper-left most
--- | and the last element is the lower-right most by comparing each element to every other element.
+-- | Uses the functions "up" and "left" to produce a sorted list where the first element is the upper-left most color
+-- | and the last element is the lower-right most color by comparing each element to every other element.
 furthest :: (((Int, Int), Color) -> [((Int, Int), Color)] -> [((Int, Int), Color)]) -- ^ Takes the "up" or "left" function
             -> [((Int, Int), Color)] -- ^ Takes a list of colors with their corresponding positions
             -> [((Int, Int), Color)] -- ^ Outputs a sorted list of colors and their positions
