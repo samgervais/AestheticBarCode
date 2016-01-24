@@ -48,21 +48,22 @@ split' = processor processSplit allocateSplit convertState releaseState
         convertState = return
         releaseState _ = return ()
 
-getBlue = first3
-getGreen = second3
-getRed = third3
-
-
+fst3 :: (a,b,c) -> a
 fst3 (a,_,_) = a
-first3 :: IOProcessor (a,b,c) a
+
+first3, getBlue :: IOProcessor (a,b,c) a
 first3 = arr fst3
 
+snd3 :: (a,b,c) -> b
 snd3 (_,b,_) = b
-second3 :: IOProcessor (a,b,c) b
+
+second3, getGreen :: IOProcessor (a,b,c) b
 second3 = arr snd3
 
+trd3 :: (a,b,c) -> c
 trd3 (_,_,c) = c
-third3 :: IOProcessor (a,b,c) c
+
+third3, getRed :: IOProcessor (a,b,c) c
 third3 = arr trd3
 
 modRed :: (x -> y) -> IOProcessor (a,b,x) (a,b,y)
@@ -100,15 +101,11 @@ arrIO f = processor process allocate convert release
         convert = return
         release _ = return ()
 
-/*
-(Int,Int) -> Image -> Image
-w = 19
-h = 5
-00000000000000000000000011110000000000000001111000011110000000111100001111000000000000000000000
 
-[2: (x1,y1), 3: (x2,y2)]
+modTrd :: (x -> y) -> (a,b,x) -> (a,b,y)
+modTrd f (a,b,x) = (a,b,f x)
 
-0000000000000000000
-0000022220000000000
-0000022220000333300
-     2222    333300*/
+
+getBlue = first3
+getGreen = second3
+getRed = third3
