@@ -1,5 +1,6 @@
 import AI.CV.ImageProcessors
 import Control.Arrow
+import Control.Processor
 import Split
 
 -- win :: IOProcessor Image ()
@@ -10,12 +11,19 @@ cam = camera 0
 edge = canny 30 190 3
 
 main = do
-  runTillKeyPressed (videoFile "out.mp4" >>> split' >>> getBlue >>> win)
-
+  output <- run (videoFile "out.mp4" >>> split' >>> getRed >>> arrIO findBlobs) ()
+  print output
 
 -- getCode :: IOProcessor Image [((Int,Int),Color)]
--- getCode = getComponents >>> getDots
---
--- getComponents :: IOProcessor Image (Image,Image,Image)
+-- getCode = split' >>> getDots
 --
 -- getDots :: IOProcessor (Image, Image, Image) [((Int,Int),Color)]
+-- getDots = (modRed redDots >>> modGreen greenDots >>> modBlue blueDots) >>> glueTogether
+
+-- glueTogether :: IOProcessor ([(Int, Int)],[(Int, Int)],[(Int, Int)]) [((Int,Int), Color)]
+-- glueTogether = arr (\(bs,gs,rs) -> [])
+
+-- redDots :: Image -> [(Int, Int)]
+-- redDots
+-- greenDots :: Image -> [(Int,Int)]
+-- blueDots :: Image -> [(Int,Int)]
