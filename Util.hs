@@ -8,14 +8,14 @@ data Color = Black | Red | Green | Blue  deriving (Show, Eq, Ord, Enum)
 -- | a base-ten number from the base-four number derived from the colors. The provided list is sorted
 -- | prior to its use in this function with the upper left most color at the head of the list and
 -- | the lower right most color as the last element of the list.
-code :: [((Int,Int), Color)] -- ^ Takes a list of colors with their corresponding positions
+code :: [((Int, Int), Color)] -- ^ Takes a list of colors with their corresponding positions
         -> Int -- ^ Outputs a base-ten int
 code = toBaseTen . toBaseFourString
 
 -- | Creates a base-four number as a string where each element of the given list represents a separate digit of the
 -- | number, and the number is derived by converting the element's color into a number; the list is also sorted
 -- | by posistion.
-toBaseFourString :: [((Int,Int), Color)] -- ^ Takes a list of colors with their corresponding positions
+toBaseFourString :: [((Int, Int), Color)] -- ^ Takes a list of colors with their corresponding positions
                     -> String -- ^ Outputs a base-four number as a string
 toBaseFourString [] = []
 toBaseFourString dots = char : rest
