@@ -1,3 +1,5 @@
+{-# LANGUAGE ScopedTypeVariables, TypeOperators #-}
+
 import AI.CV.ImageProcessors
 import Control.Arrow
 import Control.Processor
