@@ -1,4 +1,7 @@
+module Blobs where
 import Data.Array
+import Data.Foldable
+import Data.Tuple
 
 xss :: [[Int]]
 xss = [[0,0,0,0,0,0,0,0,0,0,0,0,0]
@@ -10,8 +13,10 @@ xss = [[0,0,0,0,0,0,0,0,0,0,0,0,0]
       ,[0,0,1,0,0,0,0,0,0,0,0,0,0]
       ,[0,0,0,1,0,0,0,0,0,0,0,0,0]]
 
+realXss = map (map (1-)) xss
 
 nss = array ((0,0),(12,7)) [((x,y), xss !! y !! x) | x <- [0..12], y <- [0..7]]
+realNss = array ((0,0),(12,7)) [((x,y), realXss !! y !! x) | x <- [0..12], y <- [0..7]]
 
 inBounds :: Array (Int, Int) Int -> (Int,Int) -> Bool
 inBounds arr (x,y) = x >= lx && x <= hx && y >= ly && y <= hy
@@ -35,11 +40,15 @@ getAllConnected arr i = getAllConnected' arr [i] [i]
 replaceWith :: Int -> Array (Int, Int) Int -> [(Int,Int)] -> Array (Int, Int) Int
 replaceWith x arr index = arr//[(i,x) | i <- index]
 
-perIndex :: (Array (Int, Int) Int, [[(Int,Int)]]) -> (Int,Int) -> (Array (Int, Int) Int, [[(Int,Int)]])
-perIndex (arr, xss) index = case arr ! index of
-                          1 -> (replaceWith 971 arr newXs, newXs : xss)
-                          x -> (arr, xss)
-                          where newXs = getAllConnected arr index
+perIndex :: (Array (Int, Int) Int, [[(Int,Int)]]) -> (Int,Int) -> IO (Array (Int, Int) Int, [[(Int,Int)]])
+perIndex (arr, xss) index = do
+  print index
+  print $ arr ! index
+  return $ case arr ! index of
+                1 -> (replaceWith 2 arr newXs, newXs : xss)
+                x -> (arr, xss)
+                where newXs = getAllConnected arr index
 
-findBlobs :: Array (Int, Int) Int -> [[(Int,Int)]]
-findBlobs arr = snd $ foldl perIndex (arr, []) (indices arr)
+findBlobs :: Array (Int, Int) Int -> IO [[(Int,Int)]]
+findBlobs arr = do
+  snd <$> foldlM perIndex (arr, []) (map swap $ indices arr)

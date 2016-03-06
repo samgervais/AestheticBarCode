@@ -4,7 +4,8 @@ import AI.CV.ImageProcessors
 import Control.Arrow
 import Control.Processor
 import Split
-
+import Array
+import Blobs
 -- win :: IOProcessor Image ()
 win = window 0
 -- cam :: IOProcessor () Image
@@ -13,7 +14,7 @@ cam = camera 0
 edge = canny 30 190 3
 
 main = do
-  output <- run (videoFile "out.mp4" >>> split' >>> getRed >>> arrIO findBlobs) ()
+  output <- run (videoFile "out.mp4" >>> split' >>> getRed >>> arrIO iplToArray2 >>> arrIO findBlobs) ()
   print output
 
 -- getCode :: IOProcessor Image [((Int,Int),Color)]

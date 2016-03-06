@@ -64,7 +64,8 @@ executable AestheticBarcode
                        HOpenCV,
                        allocated-processor,
                        accelerate,
-                       accelerate-io
+                       accelerate-io,
+                       array
 
   -- Directories containing source files.
   hs-source-dirs:      src

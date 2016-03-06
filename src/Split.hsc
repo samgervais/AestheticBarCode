@@ -27,7 +27,6 @@ withForeignPtr4 a b c d f = do
 foreign import ccall unsafe "cv.h cvSplit"
   c_split :: Ptr Priv_IplImage -> Ptr Priv_IplImage -> Ptr Priv_IplImage -> Ptr Priv_IplImage -> Ptr Priv_IplImage -> IO ()
 
-/*merge' :: IOProcessturn ()*/
 
 split :: Image -> Image -> Image -> Image -> IO ()
 split a b c d = do
@@ -74,25 +73,6 @@ modGreen f = arr (\(a,x,c) -> (a,f x,c))
 
 modBlue :: (x -> y) -> IOProcessor (x,b,c) (y,b,c)
 modBlue f = arr (\(x,b,c) -> (f x,b,c))
-
-
-
-
-
-findBlobs :: Image -> IO [[(Int,Int)]]
-findBlobs binary = do
-  size <- getSize binary
-  labelImage <- createImage size iplDepth32s 1
-  let width = sizeWidth size
-  let height = sizeHeight size
-  let indexes = [(x,y) | x <- [0..width-1], y <- [0..height-1]]
-
-  forM_ indexes $ \(x,y) -> do
-    imageData <- getImageData labelImage
-    thisData <- (peekElemOff imageData (y * width + x)) :: IO Word32
-    mem[0] ... mem[2^64-1]
-
-  return []
 
 arrIO :: (x -> IO y) -> IOProcessor x y
 arrIO f = processor process allocate convert release
