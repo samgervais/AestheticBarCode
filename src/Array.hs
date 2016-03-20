@@ -5,10 +5,16 @@ import Foreign.C.Types
 
 import Data.Array
 import Data.Array.Accelerate.Array.Sugar (EltRepr)
+import Control.Applicative ((<$>))
 import Foreign.Ptr (castPtr)
 import Foreign.Marshal.Array
 
-iplToArray3 :: IplImage -> IO (Array (Int,Int,Int) CUChar)
+
+-- | Converts an IplImage, the native image type for C, into a three-dementional array 
+-- | such that the first and second demention represent the rows of the image, and the
+-- | thrid shows the number of channels at every point of the image. 
+iplToArray3 :: IplImage -- ^ Initial image for conversion 
+               -> IO (Array (Int,Int,Int) CUChar) -- ^ 3-dementional array with pixel color as elements 
 iplToArray3 image = do
   (CvSize w h) <- getSize image
   d <- getNumChannels image
@@ -21,7 +27,11 @@ iplToArray3 image = do
   let arr = array ((0,0,0),(w'-1,h'-1,d'-1)) [(((i `div` d') `mod` w',i `div` w'*d',i `mod` d'),x) | (i,x) <- zip [0..] xs]
   return arr
 
-iplToArray2 :: IplImage -> IO (Array (Int,Int) Int)
+-- | Converts an IplImage, the native image type for C, into a two-dementional array 
+-- | such that the first and second represent the rows in the image. This function is 
+-- | for the use of images with only one channel. 
+iplToArray2 :: IplImage -- ^ Initial image for conversion
+               -> IO (Array (Int,Int) Int) -- ^ 2-dementional array with pixel color as elements
 iplToArray2 image = do
   (CvSize w h) <- getSize image
   d <- getNumChannels image
@@ -30,13 +40,6 @@ iplToArray2 image = do
   let h' = fromIntegral h
   imgPtr <- castPtr <$> getImageData image
   xs <- peekArray (w' * h') imgPtr :: IO [CUChar]
-  let arr = array ((0,0),(w'-1,h'-1)) [((i `mod` w',i `div` w'), (255 - (fromIntegral x)) `div` 255) | (i,x) <- zip [0..] xs]
+  let arr = array ((0,0),(w'-1,h'-1)) [((i `mod` w',i `div` w'), fromIntegral x) | (i,x) <- zip [0..] xs]
   return arr
 
-
-
--- arrayToIpl :: Array (Int, Int, Int) CUChar -> IO IplImage
--- arrayToIpl arr = do
---   let ((0,0,0), (w',h',d')) = bounds arr
---   image <- createImage (CvSize (w'+1) (h'+1)) iplDepth8u (d'+1)
---

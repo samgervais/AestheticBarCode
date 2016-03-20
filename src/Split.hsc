@@ -85,7 +85,6 @@ arrIO f = processor process allocate convert release
 modTrd :: (x -> y) -> (a,b,x) -> (a,b,y)
 modTrd f (a,b,x) = (a,b,f x)
 
-
 getBlue = first3
 getGreen = second3
 getRed = third3
