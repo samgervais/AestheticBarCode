@@ -15,8 +15,9 @@ cam = camera 0
 edge = canny 30 190 3
 
 main = do
-  output <- run (videoFile "out.mp4" >>> split' >>> getRed >>> arrIO iplToArray2 >>> arr test) ()
-  print output
+  output <- run (videoFile "out.mp4" >>> split' >>> getRed >>> arrIO iplToArray2) ()
+  -- return ()
+  print =<< findBlobs output
 
 -- getCode :: IOProcessor Image [((Int,Int),Color)]
 -- getCode = split' >>> getDots
@@ -31,3 +32,21 @@ main = do
 -- redDots
 -- greenDots :: Image -> [(Int,Int)]
 -- blueDots :: Image -> [(Int,Int)]
+-- 995092
+
+-- -- Do stuff, bind, apply, map
+-- =<< :: (a -> m b) -> m a -> m b
+-- <$> :: (a -> b) -> m a -> m b
+-- $ :: (m a -> m b) -> m a -> m b => $
+-- <?> :: (m a -> m b) -> a -> m b => f <?> x = f $ return x
+-- $ :: (a -> m b) -> a -> m b => $
+-- <?> :: m (a -> b) -> m a -> m b => f <?> x = fmap ($ x) f
+-- $ :: (a -> b) -> a -> b
+--
+-- -- Compose
+-- . :: (b -> c) -> (a -> b) -> (a -> c)
+-- <=< :: (b -> m c) -> (a -> m b) -> (a -> m c)
+-- <<< :: a' b c -> a' a b -> a' a c
+--
+--
+-- <<
