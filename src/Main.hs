@@ -17,7 +17,7 @@ edge = canny 30 190 3
 main = do
   output <- run (videoFile "out.mp4" >>> split' >>> getRed >>> arrIO iplToArray2) ()
   -- return ()
-  print =<< findBlobs output
+  print $ head $ findBlobs output
 
 -- getCode :: IOProcessor Image [((Int,Int),Color)]
 -- getCode = split' >>> getDots

@@ -15,6 +15,10 @@ xss = [[0,0,0,0,0,0,0,0,0,0,0,0,0]
       ,[0,0,1,0,0,0,0,0,0,0,0,0,0]
       ,[0,0,0,1,0,0,0,0,0,0,0,0,0]]
 
+background = 1
+foreground = 0
+other = 2
+
 realXss = map (map (1-)) xss
 
 nss = array ((0,0),(12,7)) [((x,y), xss !! y !! x) | x <- [0..12], y <- [0..7]]
@@ -50,14 +54,13 @@ getAllConnected' :: Array (Int, Int) Int -- ^ Array representing image
 getAllConnected' _ [] acc = return acc
 getAllConnected' arr is acc = do
   let blobIndecies = nub [x | x <- concatMap (checkAround arr) is, x `notElem` acc]
-  print blobIndecies
   getAllConnected' arr blobIndecies (blobIndecies++acc)
+
 -- | Uses the "getAllConected'" helper function to find the connected elements around a given index.
 getAllConnected :: Array (Int, Int) Int -- ^ Array representing image
                    -> (Int,Int) -- ^ Starting index
                    -> IO [(Int,Int)] -- ^ Returns list of indecies attached to the starting index
 getAllConnected arr i = do
-  print "yo"
   nub <$> getAllConnected' arr [i] [i]
 
 -- | Replaces all elements at the positions of given indices with a given number.
@@ -65,25 +68,23 @@ replaceWith :: Int -- ^ Elment which replaces the others
                -> Array (Int, Int) Int -- ^ Array
                -> [(Int,Int)] -- ^ Indecies to be replaced
                -> Array (Int, Int) Int -- ^ Returns a ew array with replaced indecies
-replaceWith x arr index = arr//[(i,x) | i <- index]
+replaceWith x arr indices = arr//[(i,x) | i <- indices]
 
 -- | The step function for "findBlobs", it takes a tuple of an array and a list of lists of indices (representing
 -- | the blobs in a image) and searches for the blobs around one index by using the "getAllConnected" function.
 perIndex :: (Array (Int, Int) Int, [[(Int,Int)]]) -- ^
             -> (Int,Int) -- ^ Index for step funtion
-            -> IO (Array (Int, Int) Int, [[(Int,Int)]]) -- ^ Returns the array and new state of blobs
-perIndex (arr, xss) index = do
-  newXs <- getAllConnected arr index
-  print newXs
-  return $ case arr ! index of
-            0 -> (replaceWith 2 arr newXs, newXs : xss)
-            x -> (arr, xss)
+            -> (Array (Int, Int) Int, [[(Int,Int)]]) -- ^ Returns the array and new state of blobs
+perIndex (arr, xss) index = case arr ! index of
+                              0 -> (replaceWith 2 arr newXs, newXs : xss)
+                              x -> (arr, xss)
+  where newXs = checkAround arr index
 
 -- | Folds through an array to apply the "perIndex" funtion to every index in the list which ultimately finds all the
 -- | blobs in the array.
 findBlobs :: Array (Int, Int) Int -- ^ Array representing image
-             -> IO [[(Int,Int)]] -- ^ Returns a list of lists of the blobs in the image
-findBlobs arr = snd <$> foldlM perIndex (arr, []) (indices arr)
+             -> [[(Int,Int)]] -- ^ Returns a list of lists of the blobs in the image
+findBlobs arr = snd $ foldl perIndex (arr, []) (indices arr)
 
 --forFun :: Array (Int,Int) Int -> Int
 test arr = do
