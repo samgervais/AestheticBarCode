@@ -48,4 +48,14 @@ iplToArray2 image = do
 listToArr :: [CUChar] -> (Int, Int) -> Array (Int, Int) Int
 listToArr xs (w,h) = array bounds [inner i x | (i,x) <- zip [0..] xs]
   where bounds = ((0,0),(w-1,h-1))
-        inner i x = ((i `mod` w,i `div` w), fromIntegral x `div` 255)
+        inner i x = ((i `mod` w,i `div` w), fromIntegral x)
+
+arrayToIpl2 :: Array (Int,Int) Int -> IO (IplImage)
+arrayToIpl2 arr = do
+  let (_,(w,h)) = bounds arr
+  let size = CvSize (toEnum w+1) (toEnum h+1)
+  image <- createImage size iplDepth8u 1
+  imgPtr <- castPtr <$> getImageData image
+  let list = map toEnum $ elems arr :: [CUChar]
+  pokeArray imgPtr list
+  return image

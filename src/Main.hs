@@ -15,9 +15,9 @@ cam = camera 0
 edge = canny 30 190 3
 
 main = do
-  output <- run (videoFile "out.mp4" >>> split' >>> getRed >>> arrIO iplToArray2) ()
+  let newImg output = replaceWith 255 (zeroImage (1000,1000)) $ concat $ findBlobs output
+  runTillKeyPressed (videoFile "out.mp4" >>> split' >>> getRed >>> arrIO iplToArray2 >>> arr newImg >>> arrIO arrayToIpl2 >>> win)
   -- return ()
-  print $ head $ findBlobs output
 
 -- getCode :: IOProcessor Image [((Int,Int),Color)]
 -- getCode = split' >>> getDots

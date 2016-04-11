@@ -90,3 +90,6 @@ findBlobs arr = snd $ foldl perIndex (arr, []) (indices arr)
 test arr = do
   -- print $ (elems arr)
   return $ sum (elems arr)
+
+zeroImage :: (Int, Int) -> Array (Int, Int) Int
+zeroImage (w,h) = array ((0,0),(w,h)) [((x,y),0) | x <- [0..w], y <- [0..h]]
