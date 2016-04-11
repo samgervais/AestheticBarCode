@@ -1,3 +1,9 @@
+-- Author: Samuel Gervais
+-- Saint Piux X High School
+-- email: samgervais512@gmail.com
+-- cell: (505)933-2571
+-- Split Moddule
+
 {-# LANGUAGE ForeignFunctionInterface, CPP #-}
 
 module Split where

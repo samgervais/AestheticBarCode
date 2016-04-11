@@ -1,3 +1,9 @@
+-- Author: Samuel Gervais
+-- Saint Piux X High School
+-- email: samgervais512@gmail.com
+-- cell: (505)933-2571
+-- Blobs Module
+
 module Blobs where
 import Data.Array
 import Control.Applicative ((<$>))

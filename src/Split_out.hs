@@ -1,3 +1,9 @@
+-- Author: Samuel Gervais
+-- Saint Piux X High School
+-- email: samgervais512@gmail.com
+-- cell: (505)933-2571
+-- Call to Split Module
+
 {-# LINE 1 "src/Split.hs" #-}
 {-# LANGUAGE ForeignFunctionInterface, CPP #-}
 {-# LINE 2 "src/Split.hs" #-}
@@ -19,4 +25,4 @@ import AI.CV.OpenCV.Util
 foreign import ccall unsafe "cv.h cvSplit"
   split :: Ptr Priv_IplImage -> Ptr Priv_IplImage -> Ptr Priv_IplImage -> Ptr Priv_IplImage -> IO ()
 
-main = print "yo"
+main = print "test"

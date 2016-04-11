@@ -1,3 +1,9 @@
+-- Author: Samuel Gervais
+-- Saint Piux X High School
+-- email: samgervais512@gmail.com
+-- cell: (505)933-2571
+-- Array Module  
+
 module Array where
 import AI.CV.OpenCV.CxCore
 import AI.CV.OpenCV.HighGui
